@@ -23,11 +23,11 @@
                     <div class="row">
                       <div class="col">
                         <label for="marks">Enter your marks</label>
-                        <input type="text" id="marks" class="form-control" placeholder="Marks">
+                        <input type="number" id="marks" min="0" max="5" class="form-control" placeholder="Marks">
                       </div>
                       <div class="col">
                         <label for="importance">Enter your importance</label>
-                        <input type="text" id="importance" class="form-control" placeholder="Importance">
+                        <input type="number" max="5" min="1" id="importance" class="form-control" placeholder="Importance">
                       </div>
                     </div>
                 </form>
@@ -37,6 +37,10 @@
                           <div class="col">
                             <label for="subject">Enter your subject</label>
                             <input type="text" id="subject" class="form-control" placeholder="Subject">
+                          </div>
+                          <div class="col">
+                            <label for="desc">Enter description</label>
+                            <input type="input" id="desc"  class="form-control" placeholder="Description">
                           </div>
                           <div class="col"><br>
                           <button type="button" id="submitButton" class="btn btn-primary btn-lg btn-block">Enter date!</button>
@@ -51,20 +55,20 @@
         <div class="container">
             <div class="card">
                     <h5 class="card-header">AVG:</h5>
-                    <div class="card-body"></div>
-            
+                    <div class="card-body">
+                      <div class="card-columns" id="deck">
+                      
+
+              
+
+                    </div>
+                  </div>
 
             </div>
         </div>
         
 
-                  <!--<div class="card bg-light mb-3" style="max-width: 18rem;">
-                    <div class="card-header">Header</div>
-                    <div class="card-body">
-                      <h5 class="card-title">Light card title</h5>
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                  </div> -->
+                 
 
                   <script src="app.js"></script>
 
