@@ -1,3 +1,4 @@
+var allAVG = [];
 var submitButton = document.getElementById("submitButton")
 submitButton.addEventListener("click", function(){
     var marks = document.getElementById("marks").value
@@ -10,29 +11,39 @@ submitButton.addEventListener("click", function(){
 
     var cage1 = new cage(intMarks, intImportance, subject, paragraph)
     cage1.choose();
-    
-    
-    
-    
+               
 })
+
+
+
     //making one "cage"
-function cage(intMarks, intImportance, subject, paragraph){
+function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
     this.intMarks = intMarks;
     this.intImportance = intImportance;
     this.subject = subject;
     this.paragraph = paragraph;
-
+    
+    
     this.choose = function(){
         if(intMarks=="" || intImportance=="" || subject=="" || paragraph=="" ){
-            var body = document.getElementsByClassName("container");
+            body = document.getElementById("body")
             var warning = document.createElement("div");
             warning.classList.add("alert", "alert-danger");
             warning.setAttribute("role","alert");
-            warning.innerText = "All input must be full!";
+            warning.innerText = "One of the fields is empty!";
+            warning.setAttribute("id", "warning");
             body.appendChild(warning);
+            //delete warning after 3 sec
+            setTimeout(function(){ 
+                var elem = document.getElementById("warning");
+                elem.parentNode.removeChild(elem);
+
+             }, 2000);
             
         } else{
             this.print();
+            
+
         }
     
 
@@ -63,7 +74,31 @@ function cage(intMarks, intImportance, subject, paragraph){
         desc.append(descPara);
         deck.appendChild(desc);
         
+        //adding importance to array and print it to AVG div
+        allAVG.push(intMarks);
+        
+        var sum = 0;
+        for(var i=0; i<allAVG.length; i++){ 
+            sum += allAVG[i];
+            avgsum = sum/allAVG.length;
+            
+        }
+        avgsum = Math.round(avgsum * 100) / 100; // rounding
+        var avgcard = document.getElementById("avgcard").innerHTML="AVG: "+avgsum;
+
+        
+
+
+        //deleting warning
+        if(warning) document.getElementById('warning').outerHTML = "";
+           
+        
+        
+        
+        
 
     }
+
+  
 }
 
