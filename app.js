@@ -1,4 +1,5 @@
 var allAVG = [];
+var allimportance = [];
 var submitButton = document.getElementById("submitButton")
 submitButton.addEventListener("click", function(){
     var marks = document.getElementById("marks").value
@@ -11,6 +12,8 @@ submitButton.addEventListener("click", function(){
 
     var cage1 = new cage(intMarks, intImportance, subject, paragraph)
     cage1.choose();
+    //add to local storage
+    Store.addMarks(mark)
                
 })
 
@@ -25,12 +28,12 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
     
     
     this.choose = function(){
-        if(intMarks=="" || intImportance=="" || subject=="" || paragraph=="" ){
+        if(intMarks=="" || intImportance=="" || subject=="" || paragraph=="" || intMarks>6 || intImportance>5 ){
             body = document.getElementById("body")
             var warning = document.createElement("div");
             warning.classList.add("alert", "alert-danger");
             warning.setAttribute("role","alert");
-            warning.innerText = "One of the fields is empty!";
+            warning.innerText = "One of the fields is empty or Marks or importance is too high!";
             warning.setAttribute("id", "warning");
             body.appendChild(warning);
             //delete warning after 3 sec
@@ -38,7 +41,7 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
                 var elem = document.getElementById("warning");
                 elem.parentNode.removeChild(elem);
 
-             }, 2000);
+             }, 3000);
             
         } else{
             this.print();
@@ -51,10 +54,27 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
     }
 
     this.print = function(){
+        //changing color of cards
+        switch(intImportance){
+            case 1:
+            bgc = "bg-secondary"
+            break;
+            case 2:
+            bgc = "bg-warning"
+            break;
+
+            case 3:
+            bgc = "bg-danger"
+            break;
+            default:
+            bgc = "bg-secondary"
+            break;
+        }
+        
         var deck = document.getElementById("deck");
         var desc = document.createElement("div");
         
-        desc.classList.add("card", "text-white", "bg-success", "mb-3")
+        desc.classList.add("card", "text-white", bgc, "mb-3")
         desc.style.setProperty("max-width", "18rem")
 
         var descHead = document.createElement("div")
@@ -76,11 +96,13 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
         
         //adding importance to array and print it to AVG div
         allAVG.push(intMarks);
-        
+        allimportance.push(intImportance);
         var sum = 0;
+        var denominator = 0;
         for(var i=0; i<allAVG.length; i++){ 
-            sum += allAVG[i];
-            avgsum = sum/allAVG.length;
+            sum += allimportance[i] * allAVG[i];
+            denominator += allimportance[i] 
+            avgsum = sum/denominator;
             
         }
         avgsum = Math.round(avgsum * 100) / 100; // rounding
@@ -92,13 +114,42 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
         //deleting warning
         if(warning) document.getElementById('warning').outerHTML = "";
            
-        
+      
         
         
         
 
     }
 
+    //local Storage Class
+    class store{
+       static getMarks(){
+        let marks;
+        if(localStorage.getItem("marks")===null){
+            marks = [];
+        }
+        else{
+            marks = JSON.parse(localStorage.getItem("marks"))
+        }
+        return marks;
+        }
+
+        static displayMarks(){
+
+        }
+
+        static addMarks(mark){
+            const marks = store.getMarks();
+            marks.push(mark);
+            localStorage.setItem("books", JSON.stringify(books));
+        }
+        static removeMarks(){
+
+        }
+    }
+
   
 }
-
+var deletebutton = document.getElementById("deleteButton").addEventListener("click", function(){
+     document.getElementById("cardbody").innerHTML=""
+})
