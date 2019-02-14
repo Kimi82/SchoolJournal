@@ -1,5 +1,6 @@
 var allAVG = [];
 var allimportance = [];
+var allMarks = [];
 var submitButton = document.getElementById("submitButton")
 submitButton.addEventListener("click", function(){
     var marks = document.getElementById("marks").value
@@ -12,8 +13,10 @@ submitButton.addEventListener("click", function(){
 
     var cage1 = new cage(intMarks, intImportance, subject, paragraph)
     cage1.choose();
-    //add to local storage
-    Store.addMarks(mark)
+    //take all marks to array
+    allMarks.push(cage1);
+    console.log(cage1)
+    
                
 })
 
@@ -108,40 +111,33 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
         avgsum = Math.round(avgsum * 100) / 100; // rounding
         var avgcard = document.getElementById("avgcard").innerHTML="AVG: "+avgsum;
 
-        
+        localStorage.setItem('marks', allMarks);
+        console.log("DODANEAUUU");
+        console.log(allMarks)
 
 
         //deleting warning
         if(warning) document.getElementById('warning').outerHTML = "";
            
-      
+        
         
         
         
 
     }
-
+    
     //local Storage Class
     class store{
        static getMarks(){
-        let marks;
-        if(localStorage.getItem("marks")===null){
-            marks = [];
-        }
-        else{
-            marks = JSON.parse(localStorage.getItem("marks"))
-        }
-        return marks;
+        
         }
 
         static displayMarks(){
 
         }
 
-        static addMarks(mark){
-            const marks = store.getMarks();
-            marks.push(mark);
-            localStorage.setItem("books", JSON.stringify(books));
+        static addMarks(allMarks){  
+            
         }
         static removeMarks(){
 
@@ -152,4 +148,6 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
 }
 var deletebutton = document.getElementById("deleteButton").addEventListener("click", function(){
      document.getElementById("cardbody").innerHTML=""
+
+    
 })
