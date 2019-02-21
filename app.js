@@ -1,6 +1,9 @@
 var allAVG = [];
 var allimportance = [];
 var allMarks = [];
+
+
+
 var submitButton = document.getElementById("submitButton")
 submitButton.addEventListener("click", function(){
     var marks = document.getElementById("marks").value
@@ -12,10 +15,14 @@ submitButton.addEventListener("click", function(){
     var paragraph = document.getElementById("desc").value
 
     var cage1 = new cage(intMarks, intImportance, subject, paragraph)
-    cage1.choose();
+    
     //take all marks to array
     allMarks.push(cage1);
-    console.log(cage1)
+    console.log(allMarks)
+
+    //warning
+    cage1.choose();
+    
     
                
 })
@@ -28,6 +35,8 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
     this.intImportance = intImportance;
     this.subject = subject;
     this.paragraph = paragraph;
+    
+    
     
     
     this.choose = function(){
@@ -48,11 +57,11 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
             
         } else{
             this.print();
-            
+            this.addData();
+            this.loadData();
 
         }
     
-
         
     }
 
@@ -111,43 +120,44 @@ function cage(intMarks, intImportance, subject, paragraph, ImportanceAVG){
         avgsum = Math.round(avgsum * 100) / 100; // rounding
         var avgcard = document.getElementById("avgcard").innerHTML="AVG: "+avgsum;
 
-        localStorage.setItem('marks', allMarks);
-        console.log("DODANEAUUU");
-        console.log(allMarks)
-
+        
 
         //deleting warning
+        try{
         if(warning) document.getElementById('warning').outerHTML = "";
-           
+        }
+        catch(err){console.log("all is ok :)")}  
+    
         
         
-        
-        
+
+    }
+    this.addData = function(){
+       // add to local storage
+       for(var i=0; i<=allMarks.length; i++){
+        localStorage.setItem('cage'+i, JSON.stringify(allMarks[i]));
+    }}
+
+    this.loadData = function(){
+    for(var i=0; i<=allMarks.length; i++){  
+    var localStorageArray = [];
+    localStorageArray[i] = localStorage.getItem('cage'+i);
+    console.log(localStorageArray);
+    return localStorageArray;
+    }}
 
     }
     
-    //local Storage Class
-    class store{
-       static getMarks(){
-        
-        }
 
-        static displayMarks(){
-
-        }
-
-        static addMarks(allMarks){  
-            
-        }
-        static removeMarks(){
-
-        }
-    }
+ 
+       
+   
 
   
-}
+
 var deletebutton = document.getElementById("deleteButton").addEventListener("click", function(){
      document.getElementById("cardbody").innerHTML=""
 
+  
     
 })
